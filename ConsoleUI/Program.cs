@@ -22,6 +22,7 @@ namespace ConsoleUI
             //CustomerTest();
 
 
+
             RentalManager rentalmanager = new RentalManager(new EfRentalDal());
 
             Console.WriteLine(rentalmanager.GetAll().Data);
