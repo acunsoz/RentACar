@@ -34,7 +34,17 @@ namespace DataAccess.Concrete.EntityFramework
                                  Description = ca.Description,
                                  DailyPrice = ca.DailyPrice,
                                  CarImage = (from i in context.CarImages where (i.CarId == ca.Id) 
-                                             select new CarImage { Id = i.Id,CarId = ca.Id,Date = i.Date,ImagePath = i.ImagePath}).ToList()
+                                             select new CarImage { Id = i.Id,CarId = ca.Id,Date = i.Date,ImagePath = i.ImagePath}).ToList().Count == 0
+                                                    ? new List<CarImage> { new CarImage { Id = -1, CarId = ca.Id, Date = DateTime.Now, ImagePath = "DefaultImage.jpg" } }
+                                                    : (from i in context.CarImages
+                                                       where (ca.Id == i.CarId)
+                                                       select new CarImage
+                                                       {
+                                                           Id = i.Id,
+                                                           CarId = i.CarId,
+                                                           Date = i.Date,
+                                                           ImagePath = i.ImagePath
+                                                       }).ToList()
                              };
                 //return result.ToList();
                 return filter == null
